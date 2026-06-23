@@ -11,3 +11,13 @@ The project focuses on creating a local PostgreSQL database, connecting to it fr
 - SQL
 - python-dotenv
 - pytest
+
+## Database Setup
+
+To create the local database, run:
+
+```bash
+psql -f db/setup.sql
+```
+
+This will drop and recreate the `nc_plus_one` database.
