@@ -21,3 +21,15 @@ psql -f db/setup.sql
 ```
 
 This will drop and recreate the `nc_plus_one` database.
+
+## Environment Variables
+
+Create a `.env` file in the root of the project.
+
+Add the following:
+
+```env
+PGDATABASE=nc_plus_one
+```
+
+A `.env.example` file is included to show which environment variables are needed.
