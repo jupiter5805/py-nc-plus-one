@@ -6,6 +6,6 @@ import psycopg2
 load_dotenv()
 
 
-conn = psycopg2.connect(
+connection = psycopg2.connect(
     database=os.environ["PGDATABASE"]
 )
