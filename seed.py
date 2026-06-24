@@ -6,6 +6,7 @@ from connection import connection
 def seed():
     cursor = connection.cursor()
 
+    cursor.execute("DROP TABLE IF EXISTS rsvps;")
     cursor.execute("DROP TABLE IF EXISTS events;")
     cursor.execute("DROP TABLE IF EXISTS venues;")
     cursor.execute("DROP TABLE IF EXISTS users;")
@@ -37,6 +38,14 @@ def seed():
             ends_at TIMESTAMPTZ NOT NULL,
             organiser_id INT REFERENCES users(user_id),
             venue_id INT REFERENCES venues(venue_id)
+        );
+    """)
+
+    cursor.execute("""
+        CREATE TABLE rsvps (
+            rsvp_id SERIAL PRIMARY KEY,
+            attendee_id INT REFERENCES users(user_id),
+            event_id INT REFERENCES events(event_id)
         );
     """)
 
@@ -79,6 +88,17 @@ def seed():
             event["organiser_id"],
             event["venue_id"]
         ])
+
+    with open("db/data/rsvps.json", "r") as file:
+        rsvps = json.load(file)
+
+    for rsvp in rsvps:
+        cursor.execute("""
+            INSERT INTO rsvps
+            (attendee_id, event_id)
+            VALUES
+            (%s, %s);
+        """, [rsvp["attendee_id"], rsvp["event_id"]])
 
     connection.commit()
     cursor.close()
